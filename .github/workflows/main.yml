@@ -68,7 +68,7 @@ jobs:
           scan-ref: .
           format: json
           exit-code: 0
-          vunln-type: os,library
+          vuln-type: os,library
           output:  trivy-results.json
 
       - name: Upload Trivy filesystem scan
