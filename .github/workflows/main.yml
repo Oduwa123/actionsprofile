@@ -62,7 +62,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run security scan
-        use:s: aquasecurity/trivy-action@v0.73.0
+        uses: aquasecurity/trivy-action@v0.73.0
         with:
           scan-type: fs
           scan-ref: .
