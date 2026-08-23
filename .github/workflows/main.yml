@@ -1,12 +1,15 @@
 name: Build Job
 on: 
-  # push:
-  #   branches: 
-  #     - main
+  push:
+    branches: 
+      - main
 
   pull_request:
     branches: 
       - main
+
+permissions:
+  contents: read
 
 jobs:
   Build:
@@ -18,6 +21,15 @@ jobs:
       - name: Maven Build
         run: mvn install
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: vprofile-app
+          path: target/*.war
+
+      - name: Notify if build Fails
+        if: failure()
+        run: echo "Build failed! Please check the logs for details."
 
   Testing:
     runs-on: ubuntu-latest
