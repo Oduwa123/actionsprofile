@@ -8,6 +8,9 @@ on:
     branches: 
       - main
 
+env:
+  REPOSITORY: 'vprofile-appimg'
+
 permissions:
   contents: read
 
@@ -81,5 +84,38 @@ jobs:
       - name: Notify if security scan fails
         if: failure()
         run: echo "Security scan failed! Please check the logs for details."
+
+  Build_and_publish:
+    name: Build_and_Publish
+    runs-on: ubuntu-latest
+    environment: production
+    needs: [Build, Testing, Security-Scan]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Code checkout # clone source code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.2.3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        id: build-image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f Docker-files/app/Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
 
       
