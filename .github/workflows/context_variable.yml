@@ -12,9 +12,9 @@ jobs:
     steps:
       - name: "Checking Context Variables" 
         run: |
-          echo "{{ github.event_name }}"
-          echo "{{ github.repository }}"
-          echo "{{ github.workflow }}"
-          echo "{{ github.ref }}"
-          echo "{{ github.triggering_actor }}"
-          echo "{{ github.event.user.name }}"
+          echo "Event_name:{{ github.event_name }}"
+          echo "Repo_name: {{ github.repository }}"
+          echo "Workflow: {{ github.workflow }}"
+          echo "Ref: {{ github.ref }}"
+          echo "Triggering_actor: {{ github.triggering_actor }}"
+          echo "User_name: {{ github.event.user.name }}"
