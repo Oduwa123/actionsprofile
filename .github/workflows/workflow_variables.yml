@@ -1,0 +1,17 @@
+name: Testing Variables
+
+on:
+  workflow_dispatch:
+
+env:
+  cloud: google
+
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    env:
+      greeting: Hi
+      name: Oduwa
+    steps:
+      - name: "Greeting Step for Monday" 
+        run: echo "$greeting $name, You are using ${{ env.cloud }} environment on Monday!"
