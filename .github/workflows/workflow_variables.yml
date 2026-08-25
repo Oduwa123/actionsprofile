@@ -14,4 +14,4 @@ jobs:
       name: Oduwa
     steps:
       - name: "Greeting Step for Monday" 
-        run: echo "$greeting $name, You are using ${{ env.cloud }} environment on Monday!"
+        run: echo "$greeting $name, You are using ${{ env.cloud }} environment on Monday, This is your id ${{ vars.PROJECT_ID }}!"
